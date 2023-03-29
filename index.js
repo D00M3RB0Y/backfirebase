@@ -151,10 +151,17 @@ app.post('/delete', (req, res) => {
 
     const contactoBorrar = doc(db, 'contactos', email)
     
-    deleteDoc(contactoBorrar)
-
-    res.json({
-        'alert': 'Contato borrado'
+    getDoc(doc(db, 'contactos', email)).then((contacto) => {
+        if(contacto.exists()){
+            deleteDoc(contactoBorrar)
+            res.json({
+                'alert': 'Contato borrado'
+            })
+        }else{
+            res.json({
+                'alert': 'Contato no borrado'
+            })
+        }
     })
 });
 
